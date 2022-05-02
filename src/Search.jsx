@@ -5,7 +5,8 @@ const Search = () => {
   const [searchText, setSearchText] = useState();
   const [books, setBooks] = useState([]);
   const [numberOfBooks, setNumberOfBooks] = useState();
-  const getBooks = async () => {
+  const getBooks = async (event) => {
+    event.preventDefault();
     if (searchText) {
       try {
         const booksResults = await fetchWrapper(
@@ -17,7 +18,6 @@ const Search = () => {
         setBooks(booksArray);
       } catch (error) {
         console.log({ error });
-        alert("No Search Results");
       }
     }
   };
@@ -28,12 +28,14 @@ const Search = () => {
 
   return (
     <div>
-      <input
-        onChange={(event) => setSearchText(event.target.value)}
-        type="text"
-        placeholder="Search Books"
-      />
-      <button onClick={getBooks}>Search</button>
+      <form onSubmit={getBooks}>
+        <input
+          onChange={(event) => setSearchText(event.target.value)}
+          type="text"
+          placeholder="Search Books"
+        />
+        <button onClick={getBooks}>Search</button>
+      </form>
       <div>
         <select value={numberOfBooks} onChange={ShowNumberOfBooks}>
           <option>Number of Books to Show</option>
